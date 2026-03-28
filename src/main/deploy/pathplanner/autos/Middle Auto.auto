@@ -9,11 +9,29 @@
           "data": {
             "pathName": "Middle Path"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Top Shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Forward"
+          }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

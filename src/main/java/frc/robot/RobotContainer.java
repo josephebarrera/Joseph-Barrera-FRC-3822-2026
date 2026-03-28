@@ -81,7 +81,7 @@ public class RobotContainer
 
       //Configure the SmartDashboard
       autos.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
-
+      autos.addOption(null, getAutonomousCommand());
       //Display the options 
       SmartDashboard.putData("Auto Chooser", autos);
 
@@ -113,8 +113,8 @@ public class RobotContainer
         .onTrue(Commands.runOnce(drivebase::zeroGyro));
 
       //Turret Tracking
-      driverXbox.rightBumper()
-        .whileTrue(turret.aimWithVision(vision));
+      // driverXbox.rightBumper()
+      //   .whileTrue(turret.aimWithVision(vision));
 
       Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveInputStream);
      
@@ -122,9 +122,6 @@ public class RobotContainer
       /*******************************************************************************************************************************/
 
       /****************************************************** Shooter Commands *******************************************************/
-      //Top Shooter: Toggle On and Off
-      // shooterXbox.rightBumper()
-      //   .toggleOnTrue(shooter.spinTopShooter());
 
       //Distance Shooting
       shooterXbox.rightBumper()
@@ -153,7 +150,7 @@ public class RobotContainer
         }, shooter).finallyDo(() -> shooter.stopTopShooter().schedule()));
 
       //Intake: Toggle On and Off 
-      shooterXbox.leftBumper()
+      shooterXbox.b()
         .toggleOnTrue(intake.spinIntakeForward());
 
       //Open intake
@@ -169,15 +166,7 @@ public class RobotContainer
         .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
         .onFalse(Commands.parallel(agitator.funnelStop(),shooter.stopShooterIntake()));
 
-      //Y = up Actuator
-      shooterXbox.y()
-        .onTrue(actuator.goUpCommand());
-
-      //A = down Actuator
-      shooterXbox.a()
-        .onTrue(actuator.goDownCommand());
-
-      //Movement Left
+      //Turret: Movement Left
       shooterXbox.povLeft()
         .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
         .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
@@ -191,6 +180,23 @@ public class RobotContainer
       shooterXbox.x()
         .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
         .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
+
+        //Turret Tracking
+      shooterXbox.leftBumper()
+        .whileTrue(turret.aimWithVision(vision));
+
+      //Y = up Actuator
+      // shooterXbox.y()
+      //   .onTrue(actuator.goUpCommand());
+
+      //A = down Actuator
+      // shooterXbox.a()
+      //   .onTrue(actuator.goDownCommand());
+
+      //Top Shooter: Toggle On and Off
+      // shooterXbox.rightBumper()
+      //   .toggleOnTrue(shooter.spinTopShooter());
+
       /****************************************************************************************************************************/
        
     }

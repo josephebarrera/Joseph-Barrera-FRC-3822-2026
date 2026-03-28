@@ -25,9 +25,9 @@ public class VisionSubsystem extends SubsystemBase
     }
 
    private boolean isHubTag(int id)
-    {
-        return (id == 9 || id == 10);
-    }
+{
+    return id == 9 || id == 10 || id == 25 || id == 26;
+}
 
     public boolean hasTurretHubTarget()
     {

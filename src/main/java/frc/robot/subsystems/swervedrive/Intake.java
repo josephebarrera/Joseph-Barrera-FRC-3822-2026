@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase
     {
         return Commands.run(()->
         {
-            intake.set(-100.0);
+            intake.set(-0.90);
         })
         .finallyDo(()->
         {

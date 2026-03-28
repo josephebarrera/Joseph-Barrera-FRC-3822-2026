@@ -54,7 +54,7 @@ public class Turret extends SubsystemBase
         turret.set(0.0);
     }
 
-        public void testTurnLeft()
+    public void testTurnLeft()
     {
         setTurretPower(-0.15);
     }
@@ -120,7 +120,7 @@ public class Turret extends SubsystemBase
     @Override
     public void periodic()
     {
-        System.out.println("Turret Position: " + turretEncoder.getPosition());
+        //System.out.println("Turret Position: " + turretEncoder.getPosition());
     } 
 
 }
