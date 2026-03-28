@@ -73,20 +73,6 @@ public class Shooter extends SubsystemBase
         shooterRight.set(-speed);
     }   
 
-    // public Command spinTopShooter() 
-    // {
-    //     return Commands.run(()->
-    //     {
-    //         shooterLeft.set(100.0);
-    //         shooterRight.set(-100.0);
-    //     })
-    //     .finallyDo(()->
-    //     {
-    //         shooterLeft.set(0);
-    //         shooterRight.set(0);
-    //     });
-    // }
-
     public Command shootForward() 
     {
         return Commands.parallel(
@@ -121,6 +107,20 @@ public class Shooter extends SubsystemBase
     {
         return Commands.runOnce(()->{});
     }
+
+    // public Command spinTopShooter() 
+    // {
+    //     return Commands.run(()->
+    //     {
+    //         shooterLeft.set(100.0);
+    //         shooterRight.set(-100.0);
+    //     })
+    //     .finallyDo(()->
+    //     {
+    //         shooterLeft.set(0);
+    //         shooterRight.set(0);
+    //     });
+    // }
 
     //**************************************************** Auto Commands *****************************************************/
     public Command startTopShooterAuto()

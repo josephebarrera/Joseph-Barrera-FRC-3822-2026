@@ -81,7 +81,7 @@ public class RobotContainer
 
       //Configure the SmartDashboard
       autos.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
-      autos.addOption(null, getAutonomousCommand());
+
       //Display the options 
       SmartDashboard.putData("Auto Chooser", autos);
 
@@ -96,12 +96,6 @@ public class RobotContainer
       NamedCommands.registerCommand("MARKER Shoot Forward", Commands.runOnce(() -> System.out.println("MARKER FIRED: Shoot Forward")));
       NamedCommands.registerCommand("Start Top Shooter", shooter.startTopShooterAuto());
       NamedCommands.registerCommand("Shoot Forward", Commands.parallel(agitator.funnelForwardAuto(), shooter.startShooterIntakeAuto()));
-
-      //Adrian Testing
-      // NamedCommands.registerCommand("Spin Agitator", agitator.funnelForward());
-      // NamedCommands.registerCommand("Spin Shooter Intake", shooter.spinShooterIntake());
-      // NamedCommands.registerCommand("Stop Shooter Intake", shooter.stopShooterIntake());
-      // NamedCommands.registerCommand("Stop Agitator", agitator.funnelStop());
     }
 
     private void configureBindings()

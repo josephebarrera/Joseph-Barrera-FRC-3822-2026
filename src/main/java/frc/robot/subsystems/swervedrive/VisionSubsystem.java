@@ -102,8 +102,7 @@ public class VisionSubsystem extends SubsystemBase
             return 0.0;
         }
 
-        double distanceInches = (targetHeightInches - cameraHeightInches)
-        / Math.tan(Math.toRadians(totalAngleDegrees));
+        double distanceInches = (targetHeightInches - cameraHeightInches) / Math.tan(Math.toRadians(totalAngleDegrees));
 
         return distanceInches / 12.0;
     }

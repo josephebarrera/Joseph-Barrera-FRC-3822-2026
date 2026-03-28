@@ -46,6 +46,7 @@ public class Robot extends TimedRobot
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
+    //Display cameras feeds in Elastic 
     CameraServer.startAutomaticCapture();
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
