@@ -106,10 +106,6 @@ public class RobotContainer
       driverXbox.b()
         .onTrue(Commands.runOnce(drivebase::zeroGyro));
 
-      //Turret Tracking
-      // driverXbox.rightBumper()
-      //   .whileTrue(turret.aimWithVision(vision));
-
       Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveInputStream);
      
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -209,6 +205,11 @@ public class RobotContainer
     public void setMotorBrake(boolean brake)
     {
      
+    }
+
+    public SwerveSubsystem getDrivebase()
+    {
+      return drivebase;
     }
 
    
