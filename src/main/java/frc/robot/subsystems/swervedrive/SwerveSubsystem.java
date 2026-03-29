@@ -76,7 +76,8 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-   
+    //ChatGPT told me to add this
+    System.out.println(getPose().getRotation().getDegrees()); //Print 
   }
 
 

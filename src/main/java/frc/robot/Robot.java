@@ -105,6 +105,10 @@ public class Robot extends TimedRobot
   public void autonomousInit()
   {
     m_robotContainer.setMotorBrake(true);
+
+    //Zero Gyro In Auto
+    m_robotContainer.getDrivebase().zeroGyro();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     //Print the selected autonomous command upon autonomous init
@@ -134,8 +138,9 @@ public class Robot extends TimedRobot
     m_autonomousCommand.cancel();
   }
 
-  // Auto-zero gyro
-  m_robotContainer.getDrivebase().zeroGyro();
+  // Zero-gyro at the start of TeleOp
+  //m_robotContainer.getDrivebase().zeroGyro();
+
   }
 
   /**
