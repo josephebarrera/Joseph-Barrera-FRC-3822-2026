@@ -35,6 +35,7 @@ public class RobotContainer
     //The robot's subsystems and commands are defined here...
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/neo"));
 
+    //Create a vision subsystem
     private final VisionSubsystem vision = new VisionSubsystem();
 
     //Created a shooter
@@ -171,7 +172,7 @@ public class RobotContainer
         .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
         .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
 
-        //Turret Tracking
+      //Turret Tracking
       shooterXbox.leftBumper()
         .whileTrue(turret.aimWithVision(vision));
 
