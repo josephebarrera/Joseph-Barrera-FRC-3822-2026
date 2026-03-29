@@ -16,7 +16,7 @@ public class Intake extends SubsystemBase
     private final RelativeEncoder armEncoder = armJoint.getEncoder();
 
     //Add a target open position
-    private final double OPEN_POSITION = 30; //TUNE LATER
+    private final double OPEN_POSITION = 35; //TUNE LATER
 
     //Add a target closed position
     private final double CLOSED_POSITION = 0;

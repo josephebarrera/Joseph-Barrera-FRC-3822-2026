@@ -127,8 +127,8 @@ public class Shooter extends SubsystemBase
     {
         return Commands.runOnce(()->
         {
-            shooterLeft.set(100.0);
-            shooterRight.set(-100.0);
+            shooterLeft.set(0.65);
+            shooterRight.set(-0.65);
         });
     }
 
