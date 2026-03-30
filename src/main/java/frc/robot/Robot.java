@@ -138,8 +138,8 @@ public class Robot extends TimedRobot
     m_autonomousCommand.cancel();
   }
 
-  // Zero-gyro at the start of TeleOp
-  //m_robotContainer.getDrivebase().zeroGyro();
+  //Zero-gyro at the start of TeleOp
+  m_robotContainer.getDrivebase().zeroGyro();
 
   }
 
