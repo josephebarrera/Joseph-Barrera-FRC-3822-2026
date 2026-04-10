@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.swervedrive.Actuator;
-import frc.robot.subsystems.swervedrive.Agitator;
-import frc.robot.subsystems.swervedrive.Intake;
-import frc.robot.subsystems.swervedrive.Shooter;
+// import frc.robot.subsystems.swervedrive.Actuator;
+// import frc.robot.subsystems.swervedrive.Agitator;
+// import frc.robot.subsystems.swervedrive.Intake;
+// import frc.robot.subsystems.swervedrive.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.swervedrive.Turret;
+// import frc.robot.subsystems.swervedrive.Turret;
 import frc.robot.subsystems.swervedrive.VisionSubsystem;
 
 import java.io.File;
@@ -40,19 +40,19 @@ public class RobotContainer
     private final VisionSubsystem vision = new VisionSubsystem();
 
     //Created a shooter
-    Shooter shooter = new Shooter();
+    // Shooter shooter = new Shooter();
 
     //Created a agitator
-    Agitator agitator = new Agitator();
+    // Agitator agitator = new Agitator();
 
     //Create a intake
-    Intake intake = new Intake();
+    // Intake intake = new Intake();
 
     //Create a turret
-    Turret turret = new Turret();
+    // Turret turret = new Turret();
 
     //Create a actuator
-    Actuator actuator = new Actuator();
+    // Actuator actuator = new Actuator();
 
     //Give SmartDashboard the ability to choose Autos
     private final SendableChooser<Command> autos = new SendableChooser<>();
@@ -94,10 +94,10 @@ public class RobotContainer
 
     private void setupPathPlannerCommands()
     {
-      NamedCommands.registerCommand("MARKER Top Shooter", Commands.runOnce(() -> System.out.println("MARKER FIRED: Start Top Shooter")));
-      NamedCommands.registerCommand("MARKER Shoot Forward", Commands.runOnce(() -> System.out.println("MARKER FIRED: Shoot Forward")));
-      NamedCommands.registerCommand("Start Top Shooter", shooter.startTopShooterAuto());
-      NamedCommands.registerCommand("Shoot Forward", Commands.parallel(agitator.funnelForwardAuto(), shooter.startShooterIntakeAuto()));
+      // NamedCommands.registerCommand("MARKER Top Shooter", Commands.runOnce(() -> System.out.println("MARKER FIRED: Start Top Shooter")));
+      // NamedCommands.registerCommand("MARKER Shoot Forward", Commands.runOnce(() -> System.out.println("MARKER FIRED: Shoot Forward")));
+      // NamedCommands.registerCommand("Start Top Shooter", shooter.startTopShooterAuto());
+      // NamedCommands.registerCommand("Shoot Forward", Commands.parallel(agitator.funnelForwardAuto(), shooter.startShooterIntakeAuto()));
     }
 
     private void configureBindings()
@@ -116,66 +116,66 @@ public class RobotContainer
       /****************************************************** Shooter Commands *******************************************************/
 
       //Distance Shooting
-      shooterXbox.rightBumper()
-        .whileTrue(Commands.run(() ->
-        {
-          double distance = vision.getTurretHubDistanceFeet();
-          double speed;
+      // shooterXbox.rightBumper()
+      //   .whileTrue(Commands.run(() ->
+      //   {
+      //     double distance = vision.getTurretHubDistanceFeet();
+      //     double speed;
 
-          if (distance < 4)
-          {
-              speed = 0.7;
-          }
-          else if (distance < 6)
-          {
-              speed = 0.75; //Tested already
-          }
-          else
-          {
-              speed = 1.0;
-          }
+      //     if (distance < 4)
+      //     {
+      //         speed = 0.7;
+      //     }
+      //     else if (distance < 6)
+      //     {
+      //         speed = 0.75; //Tested already
+      //     }
+      //     else
+      //     {
+      //         speed = 1.0;
+      //     }
 
-          shooter.setShooterSpeed(speed);
-          System.out.println("Distance: " + distance);
-          System.out.println("Shooter Speed: " + speed);
+      //     shooter.setShooterSpeed(speed);
+      //     System.out.println("Distance: " + distance);
+      //     System.out.println("Shooter Speed: " + speed);
 
-        }, shooter).finallyDo(() -> shooter.stopTopShooter().schedule()));
+      //   }, shooter).finallyDo(() -> shooter.stopTopShooter().schedule()));
 
-      //Intake: Toggle On and Off 
-      shooterXbox.b()
-        .toggleOnTrue(intake.spinIntakeForward());
+      // //Intake: Toggle On and Off 
+      // shooterXbox.b()
+      //   .toggleOnTrue(intake.spinIntakeForward());
 
       //Open intake
-      shooterXbox.povDown()
-        .whileTrue((intake.foldOpenIntake()));
+      // shooterXbox.povDown()
+      //   .whileTrue((intake.foldOpenIntake()));
 
       //Close intake
-      shooterXbox.povUp()
-        .whileTrue(intake.foldCloseIntake());
+      // shooterXbox.povUp()
+      //   .whileTrue(intake.foldCloseIntake());
 
         //Shoot: Hold R2
-      shooterXbox.rightTrigger()
-        .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
-        .onFalse(Commands.parallel(agitator.funnelStop(),shooter.stopShooterIntake()));
+      // shooterXbox.rightTrigger()
+        // .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
+        // .onFalse(Commands.parallel(agitator.funnelStop(),shooter.stopShooterIntake()));
 
       //Turret: Movement Left
-      shooterXbox.povLeft()
-        .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
-        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
+      // shooterXbox.povLeft()
+      //   .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
+      //   .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
 
       //Turret: Movement Right
-      shooterXbox.povRight()
-        .whileTrue(Commands.run(() -> turret.testTurnRight(), turret))
-        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
+      // shooterXbox.povRight()
+      //   .whileTrue(Commands.run(() -> turret.testTurnRight(), turret))
+      //   .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
 
       //Agitator and shooter intake reverse
-      shooterXbox.x()
-        .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
-        .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
+      // shooterXbox.x()
+      //   .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
+      //   .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
 
       //Turret Tracking
-      shooterXbox.leftBumper()
-        .whileTrue(turret.aimWithVision(vision));
+      // shooterXbox.leftBumper()
+      //   .whileTrue(turret.aimWithVision(vision));
 
       //Y = up Actuator
       // shooterXbox.y()
