@@ -25,53 +25,54 @@ public class VisionSubsystem extends SubsystemBase
     }
 
    private boolean isHubTag(int id)
-{
-    return id == 9 || id == 10 || id == 25 || id == 26;
-}
+    {
+        return id == 9 || id == 10 || id == 25 || id == 26;
+    }
 
     public boolean hasTurretHubTarget()
     {
         var result = turretCam.getLatestResult();
 
         if (!result.hasTargets())
-    {
-        return false;
-    }
-
-    for (var target : result.getTargets())
-    {
-        if (isHubTag(target.getFiducialId()))
         {
-            return true;
+            return false;
         }
-    }
 
-    return false;
+        for (var target : result.getTargets())
+        {
+            if (isHubTag(target.getFiducialId()))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public double getTurretHubYaw()
     {
-    var result = turretCam.getLatestResult();
+        var result = turretCam.getLatestResult();
 
-    if (!result.hasTargets())
-    {
-        return 0.0;
-    }
-
-    for (var target : result.getTargets())
-    {
-        if (isHubTag(target.getFiducialId()))
+        if (!result.hasTargets())
         {
-            return target.getYaw();
+            return 0.0;
         }
-    }
 
-    return 0.0;
+        for (var target : result.getTargets())
+        {
+            if (isHubTag(target.getFiducialId()))
+            {
+                return target.getYaw();
+            }
+        }
+
+        return 0.0;
     }
 
     public double getTurretHubPitch()
     {
         var result = turretCam.getLatestResult();
+
         if(!result.hasTargets())
         {
             return 0.0;
@@ -89,7 +90,6 @@ public class VisionSubsystem extends SubsystemBase
 
     public double getTurretHubDistanceFeet()
     {
-        //CHANGE THIS LATER TO REAL NUMBERS
         double cameraHeightInches = 22.0;
         double targetHeightInches = 46.0;
         double cameraAngleDegrees = 28.0;
@@ -106,29 +106,5 @@ public class VisionSubsystem extends SubsystemBase
 
         return distanceInches / 12.0;
     }
-
-    // public boolean hasTurretTarget()
-    // {
-    //     return getTurretResult().hasTargets();
-    // }
-
-    // public double getTurretYaw()
-    // {
-    //     if (hasTurretTarget())
-    //     {
-    //         return getTurretResult().getBestTarget().getYaw();
-    //     }
-    //     return 0.0;
-    // }
-
-    // public double getTurretPitch()
-    // {
-    //     if (hasTurretTarget())
-    //     {
-    //         return getTurretResult().getBestTarget().getPitch();
-    //     }
-    //     return 0.0;
-    // }
-
 
 }

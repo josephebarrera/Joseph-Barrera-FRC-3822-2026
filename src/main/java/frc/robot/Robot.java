@@ -1,7 +1,6 @@
 package frc.robot;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -9,7 +8,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import frc.robot.subsystems.swervedrive.Intake;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -23,8 +21,6 @@ public class Robot extends TimedRobot
   private RobotContainer m_robotContainer;
   private Timer disabledTimer;
   XboxController controller = new XboxController(0);
-
-
 
   public Robot()
   {
@@ -128,18 +124,19 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousPeriodic()
   {
+
   }
 
   @Override
   public void teleopInit()
   {
-    if (m_autonomousCommand != null)
-  {
-    m_autonomousCommand.cancel();
-  }
+      if (m_autonomousCommand != null)
+    {
+      m_autonomousCommand.cancel();
+    }
 
-  //Zero-gyro at the start of TeleOp
-  m_robotContainer.getDrivebase().zeroGyro();
+    //Zero-gyro at the start of TeleOp
+    m_robotContainer.getDrivebase().zeroGyro();
 
   }
 
@@ -174,6 +171,7 @@ public class Robot extends TimedRobot
   @Override
   public void simulationInit()
   {
+
   }
 
   /**
