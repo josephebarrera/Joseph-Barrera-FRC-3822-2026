@@ -7,22 +7,22 @@
   "absoluteEncoderOffset": 24.5214,
   "drive": {
     "type": "sparkmax_neo",
-    "id": 4,
+    "id": 1,
     "canbus": "rio"
   },
   "angle": {
     "type": "sparkmax_neo",
-    "id": 3,
+    "id": 2,
     "canbus": "rio"
   },
   "encoder": {
     "type": "cancoder",
-    "id": 18,
+    "id": 11,
     "canbus": "rio"
   },
   "inverted": {
-    "drive": true,
-    "angle": true
+    "drive": false,
+    "angle": false
   },
   "absoluteEncoderInverted": false
 }
