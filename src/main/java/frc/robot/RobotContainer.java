@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-// import frc.robot.subsystems.swervedrive.VisionSubsystem;
 import java.io.File;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -30,8 +29,6 @@ public class RobotContainer
     //The robot's subsystems and commands are defined here...
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/neo"));
 
-    //Create a vision subsystem
-    // private final VisionSubsystem vision = new VisionSubsystem();
 
     //Give SmartDashboard the ability to choose Autos
     private final SendableChooser<Command> autos = new SendableChooser<>();
