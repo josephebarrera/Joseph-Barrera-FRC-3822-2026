@@ -28,6 +28,7 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import frc.robot.subsystems.swervedrive.VisionSubsystem;
 
 public class SwerveSubsystem extends SubsystemBase
 {
@@ -35,6 +36,7 @@ public class SwerveSubsystem extends SubsystemBase
    * Swerve drive object.
    */
   private final SwerveDrive swerveDrive;
+  private final VisionSubsystem vision = new VisionSubsystem();
   
 
   /**
@@ -76,9 +78,14 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    //ChatGPT told me to add this
-    System.out.println(getPose().getRotation().getDegrees()); //Print 
+      vision.getEstimatedPose().ifPresent(estimate -> {
+          swerveDrive.swerveDrivePoseEstimator.addVisionMeasurement(
+              estimate.estimatedPose.toPose2d(),
+              estimate.timestampSeconds
+          );
+      });
   }
+
 
 
   /**

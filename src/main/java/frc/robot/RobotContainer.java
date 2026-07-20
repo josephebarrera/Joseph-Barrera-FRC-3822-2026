@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import swervelib.SwerveInputStream;
-
+import frc.robot.subsystems.swervedrive.VisionSubsystem;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -28,7 +28,7 @@ public class RobotContainer
 
     //The robot's subsystems and commands are defined here...
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/neo"));
-
+    private final VisionSubsystem vision = new VisionSubsystem();
 
     //Give SmartDashboard the ability to choose Autos
     private final SendableChooser<Command> autos = new SendableChooser<>();
