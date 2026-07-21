@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.photonvision.PhotonCamera;
@@ -23,9 +25,9 @@ public class VisionSubsystem extends SubsystemBase
         AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
         // Replace this later with your actual camera position on the robot.
-        Transform3d robotToCamera = new Transform3d();
+        Transform3d robotToCamera = new Transform3d(new Translation3d(0.381,0.0508,0.3683), new Rotation3d(0.0, 0.0, Math.PI));
 
-        poseEstimator = new PhotonPoseEstimator(fieldLayout,PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,robotToCamera);
+        poseEstimator = new PhotonPoseEstimator(fieldLayout,PoseStrategy.LOWEST_AMBIGUITY,robotToCamera);
     }
 
     public Optional<EstimatedRobotPose> getEstimatedPose()
@@ -38,32 +40,21 @@ public class VisionSubsystem extends SubsystemBase
             return Optional.empty();
         }
 
-        return poseEstimator.update(result);
+        var estimate = poseEstimator.update(result);
+
+        estimate.ifPresent(est -> 
+        {
+            System.out.println("Vision Heading: " + est.estimatedPose.toPose2d().getRotation().getDegrees());
+        });
+    
+
+        return estimate;
     }
 
     @Override
     public void periodic()
     {
 
-        var result = camera.getLatestResult();
-
-        System.out.println("Targets: " + result.hasTargets());
-
-        if (result.hasTargets())
-        {
-            System.out.println("Tag ID: " + result.getBestTarget().getFiducialId());
-
-            var estimate = poseEstimator.update(result);
-
-            if (estimate.isPresent())
-            {
-                System.out.println("Pose: " + estimate.get().estimatedPose.toPose2d());
-            } 
-             else
-            {
-                System.out.println("Pose estimate failed");
-            }
-        }
     }
 
 }

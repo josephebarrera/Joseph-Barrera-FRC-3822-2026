@@ -78,11 +78,10 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-      vision.getEstimatedPose().ifPresent(estimate -> {
-          swerveDrive.swerveDrivePoseEstimator.addVisionMeasurement(
-              estimate.estimatedPose.toPose2d(),
-              estimate.timestampSeconds
-          );
+    System.out.println("NavX Heading: " + getPose().getRotation().getDegrees());
+      vision.getEstimatedPose().ifPresent(estimate -> 
+      {
+
       });
   }
 

@@ -28,7 +28,6 @@ public class RobotContainer
 
     //The robot's subsystems and commands are defined here...
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/neo"));
-    private final VisionSubsystem vision = new VisionSubsystem();
 
     //Give SmartDashboard the ability to choose Autos
     private final SendableChooser<Command> autos = new SendableChooser<>();
