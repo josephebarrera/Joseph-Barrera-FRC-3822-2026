@@ -202,6 +202,19 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.zeroGyro();
   }
 
+  /**
+   * Zeros the gyro to the robot's current physical orientation, then resets the tracked heading to the correct
+   * alliance-relative forward direction (0 degrees for Blue, 180 for Red) instead of an absolute zero, so this can be
+   * safely used regardless of alliance.
+   */
+  public void zeroGyroAllianceAware()
+  {
+    swerveDrive.zeroGyro();
+    boolean blueAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue;
+    Rotation2d allianceForward = blueAlliance ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180);
+    resetOdometry(new Pose2d(getPose().getTranslation(), allianceForward));
+  }
+
   
   /**
    * Gets the current velocity (x, y and omega) of the robot
