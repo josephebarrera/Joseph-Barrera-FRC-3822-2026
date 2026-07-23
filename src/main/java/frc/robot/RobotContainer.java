@@ -37,12 +37,12 @@ public class RobotContainer
     */
     public SwerveInputStream driveInputStream = SwerveInputStream.of(
     drivebase.getSwerveDrive(),
-    () -> driverXbox.getLeftY(),
-    () -> driverXbox.getLeftX())
+    () -> -driverXbox.getLeftY(),
+    () -> -driverXbox.getLeftX())
     .withControllerRotationAxis(()-> driverXbox.getRightX())
     .deadband(Constants.OperatorConstants.DEADBAND)
-    .scaleTranslation(0.5) //Originally 0.5 
-    .allianceRelativeControl(false);
+    .scaleTranslation(0.5) //Originally 0.5
+    .allianceRelativeControl(true);
       
     /**
     * The container for the robot. Contains subsystems, OI devices, and commands.
