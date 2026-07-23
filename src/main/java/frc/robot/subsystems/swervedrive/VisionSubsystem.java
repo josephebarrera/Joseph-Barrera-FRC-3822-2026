@@ -96,9 +96,9 @@ public class VisionSubsystem extends SubsystemBase
 
     /**
      * Straight-line distance from the robot's current field position to the hub's fixed field position, in feet.
-     * Unlike getTurretHubDistanceFeet(), this doesn't require the turret camera to have a visual lock - it's
-     * always available as long as the robot's own pose is known, which is what makes shooting from any
-     * position (not just when the hub happens to be in view) possible.
+     * Doesn't require the turret camera to have a visual lock - it's always available as long as the robot's
+     * own pose is known, which is what makes shooting from any position (not just when the hub happens to be
+     * in view) possible.
      *
      * @param robotPose Current robot field pose, from SwerveSubsystem.getPose().
      */
@@ -151,44 +151,6 @@ public class VisionSubsystem extends SubsystemBase
         }
 
         return 0.0;
-    }
-
-    public double getTurretHubPitch()
-    {
-        var result = turretCam.getLatestResult();
-        if (!result.hasTargets())
-        {
-            return 0.0;
-        }
-        for (var target : result.getTargets())
-        {
-            if (isHubTag(target.getFiducialId()))
-            {
-                return target.getPitch();
-            }
-        }
-
-        return 0.0;
-    }
-
-    public double getTurretHubDistanceFeet()
-    {
-        //CHANGE THIS LATER TO REAL NUMBERS
-        double cameraHeightInches = 22.0;
-        double targetHeightInches = 46.0;
-        double cameraAngleDegrees = 28.0;
-
-        double pitchDegrees = getTurretHubPitch();
-        double totalAngleDegrees = cameraAngleDegrees + pitchDegrees;
-
-        if (Math.abs(totalAngleDegrees) < 0.001)
-        {
-            return 0.0;
-        }
-
-        double distanceInches = (targetHeightInches - cameraHeightInches) / Math.tan(Math.toRadians(totalAngleDegrees));
-
-        return distanceInches / 12.0;
     }
 
 }
