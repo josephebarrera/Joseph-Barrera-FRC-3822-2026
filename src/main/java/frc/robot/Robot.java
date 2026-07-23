@@ -133,7 +133,7 @@ public class Robot extends TimedRobot
     }
 
     //Zero-gyro at the start of TeleOp
-    m_robotContainer.getDrivebase().zeroGyro();
+    //m_robotContainer.getDrivebase().zeroGyro();
 
   }
 

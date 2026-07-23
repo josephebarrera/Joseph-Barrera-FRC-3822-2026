@@ -44,17 +44,18 @@ public class VisionSubsystem extends SubsystemBase
 
         estimate.ifPresent(est -> 
         {
-            System.out.println("Vision Heading: " + est.estimatedPose.toPose2d().getRotation().getDegrees());
+            // System.out.println("Vision Heading: " + est.estimatedPose.toPose2d().getRotation().getDegrees());
         });
     
 
         return estimate;
     }
 
-    @Override
+   @Override
     public void periodic()
     {
-
+    
     }
+
 
 }

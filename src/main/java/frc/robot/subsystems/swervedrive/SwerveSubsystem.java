@@ -47,6 +47,9 @@ public class SwerveSubsystem extends SubsystemBase
    public SwerveSubsystem(File directory)
   { 
     boolean blueAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue;
+
+    System.out.println("Alliance = " + DriverStation.getAlliance());
+    System.out.println("blueAlliance = " + blueAlliance);
     Pose2d startingPose = blueAlliance ? new Pose2d(new Translation2d(Meter.of(1),
                                                                       Meter.of(4)),
                                                     Rotation2d.fromDegrees(0))
@@ -72,17 +75,35 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
     // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    resetOdometry(startingPose);
+    System.out.println("Pose after reset = " + getPose());
     setupPathPlanner();
+
   }
 
   @Override
   public void periodic()
   {
-    System.out.println("NavX Heading: " + getPose().getRotation().getDegrees());
-      vision.getEstimatedPose().ifPresent(estimate -> 
-      {
+    // System.out.println(
+    //   "NavX = " + swerveDrive.getYaw().getDegrees() +
+    //     " | Pose = " + getPose().getRotation().getDegrees()
+    // );
+    //System.out.println("Pose Heading: " + getPose().getRotation().getDegrees());
 
-      });
+   ChassisSpeeds speeds = getRobotVelocity();
+   System.out.printf(
+    "vx=%.2f  vy=%.2f   poseX=%.2f%n",
+    speeds.vxMetersPerSecond,
+    speeds.vyMetersPerSecond,
+    getPose().getX()
+   );
+
+     vision.getEstimatedPose().ifPresent(estimate -> {
+            swerveDrive.swerveDrivePoseEstimator.addVisionMeasurement(
+                estimate.estimatedPose.toPose2d(),
+                estimate.timestampSeconds
+            );
+        });
   }
 
 
@@ -197,7 +218,16 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyro()
   {
+    
+
+    System.out.println("Before: " + swerveDrive.getYaw().getDegrees());
+
     swerveDrive.zeroGyro();
+
+    System.out.println("After: " + swerveDrive.getYaw().getDegrees());
+    System.out.println("Pose: " + getPose());
+
+   
   }
 
   
