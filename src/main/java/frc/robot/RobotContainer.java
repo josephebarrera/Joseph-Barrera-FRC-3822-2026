@@ -163,18 +163,6 @@ public class RobotContainer
       shooterXbox.povUp()
         .whileTrue(intake.foldCloseIntake());
 
-      //Y = up Actuator
-      // shooterXbox.y()
-      //   .onTrue(actuator.goUpCommand());
-
-      //A = down Actuator
-      // shooterXbox.a()
-      //   .onTrue(actuator.goDownCommand());
-
-      //Top Shooter: Toggle On and Off
-      // shooterXbox.rightBumper()
-      //   .toggleOnTrue(shooter.spinTopShooter());
-
       /****************************************************************************************************************************/
 
     }
@@ -186,7 +174,6 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-      System.out.println("Working!");
       return autos.getSelected();
     }
 
