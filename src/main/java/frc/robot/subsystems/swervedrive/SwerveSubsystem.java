@@ -35,7 +35,13 @@ public class SwerveSubsystem extends SubsystemBase
    * Swerve drive object.
    */
   private final SwerveDrive swerveDrive;
-  
+
+  /**
+   * Shared vision instance, injected via {@link #setVisionSubsystem} rather than owned here, since Turret and
+   * Shooter also need the same PhotonCamera instances - owning a second one here would duplicate the cameras.
+   */
+  private VisionSubsystem vision;
+
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -74,9 +80,29 @@ public class SwerveSubsystem extends SubsystemBase
     setupPathPlanner();
   }
 
+  /**
+   * Shares the robot's single VisionSubsystem instance so bodyCam pose estimates can be fused into odometry.
+   * Called once from RobotContainer after both subsystems are constructed.
+   *
+   * @param vision The shared {@link VisionSubsystem} instance.
+   */
+  public void setVisionSubsystem(VisionSubsystem vision)
+  {
+    this.vision = vision;
+  }
+
   @Override
   public void periodic()
   {
+    if (vision != null)
+    {
+      vision.getEstimatedPose().ifPresent(estimate -> {
+          swerveDrive.swerveDrivePoseEstimator.addVisionMeasurement(
+              estimate.estimatedPose.toPose2d(),
+              estimate.timestampSeconds
+          );
+      });
+    }
   }
 
 

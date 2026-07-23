@@ -75,6 +75,9 @@ public class RobotContainer
     public RobotContainer()
     {
 
+      //Share the single VisionSubsystem instance with the drivetrain so bodyCam pose estimates feed odometry
+      drivebase.setVisionSubsystem(vision);
+
       //Configure the PathPlanner commands
       setupPathPlannerCommands();
 
