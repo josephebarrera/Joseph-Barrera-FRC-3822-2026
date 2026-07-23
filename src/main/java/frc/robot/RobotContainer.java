@@ -106,7 +106,7 @@ public class RobotContainer
       /*********************************************************** Driver Commands ***************************************************/
       //Zero the gyro
       driverXbox.b()
-        .onTrue(Commands.runOnce(drivebase::zeroGyro));
+        .onTrue(Commands.runOnce(drivebase::zeroGyroAllianceAware));
 
       Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveInputStream);
      

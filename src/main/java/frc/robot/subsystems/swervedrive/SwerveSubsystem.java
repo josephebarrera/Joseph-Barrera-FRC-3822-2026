@@ -70,14 +70,13 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
     // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    resetOdometry(startingPose);
     setupPathPlanner();
   }
 
   @Override
   public void periodic()
   {
-    //ChatGPT told me to add this
-    System.out.println(getPose().getRotation().getDegrees()); //Print 
   }
 
 
@@ -192,6 +191,19 @@ public class SwerveSubsystem extends SubsystemBase
   public void zeroGyro()
   {
     swerveDrive.zeroGyro();
+  }
+
+  /**
+   * Zeros the gyro to the robot's current physical orientation, then resets the tracked heading to the correct
+   * alliance-relative forward direction (0 degrees for Blue, 180 for Red) instead of an absolute zero, so this can be
+   * safely used regardless of alliance.
+   */
+  public void zeroGyroAllianceAware()
+  {
+    swerveDrive.zeroGyro();
+    boolean blueAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue;
+    Rotation2d allianceForward = blueAlliance ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180);
+    resetOdometry(new Pose2d(getPose().getTranslation(), allianceForward));
   }
 
   
