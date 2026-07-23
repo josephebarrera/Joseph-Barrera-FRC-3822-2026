@@ -72,17 +72,19 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
     // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    resetOdometry(startingPose);
     setupPathPlanner();
   }
 
   @Override
   public void periodic()
   {
-    System.out.println("NavX Heading: " + getPose().getRotation().getDegrees());
-      vision.getEstimatedPose().ifPresent(estimate -> 
-      {
-
-      });
+    vision.getEstimatedPose().ifPresent(estimate -> {
+        swerveDrive.swerveDrivePoseEstimator.addVisionMeasurement(
+            estimate.estimatedPose.toPose2d(),
+            estimate.timestampSeconds
+        );
+    });
   }
 
 

@@ -24,7 +24,7 @@ public class VisionSubsystem extends SubsystemBase
     {
         AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-        // Replace this later with your actual camera position on the robot.
+        // Camera is mounted 0.381m forward, 0.0508m left, 0.3683m up from robot center, facing the robot's front (yaw offset by PI since the camera faces opposite the mount's zero direction).
         Transform3d robotToCamera = new Transform3d(new Translation3d(0.381,0.0508,0.3683), new Rotation3d(0.0, 0.0, Math.PI));
 
         poseEstimator = new PhotonPoseEstimator(fieldLayout,PoseStrategy.LOWEST_AMBIGUITY,robotToCamera);
@@ -40,15 +40,7 @@ public class VisionSubsystem extends SubsystemBase
             return Optional.empty();
         }
 
-        var estimate = poseEstimator.update(result);
-
-        estimate.ifPresent(est -> 
-        {
-            System.out.println("Vision Heading: " + est.estimatedPose.toPose2d().getRotation().getDegrees());
-        });
-    
-
-        return estimate;
+        return poseEstimator.update(result);
     }
 
     @Override
