@@ -42,7 +42,7 @@ public class RobotContainer
     .withControllerRotationAxis(()-> driverXbox.getRightX())
     .deadband(Constants.OperatorConstants.DEADBAND)
     .scaleTranslation(0.5) //Originally 0.5
-    .allianceRelativeControl(true);
+    .allianceRelativeControl(false);
       
     /**
     * The container for the robot. Contains subsystems, OI devices, and commands.
