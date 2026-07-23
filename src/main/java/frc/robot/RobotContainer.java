@@ -118,31 +118,9 @@ public class RobotContainer
 
       /****************************************************** Shooter Commands *******************************************************/
 
-      //Distance Shooting
-      shooterXbox.rightBumper()
-        .whileTrue(Commands.run(() ->
-        {
-          double distance = vision.getTurretHubDistanceFeet();
-          double speed;
-
-          if (distance < 4)
-          {
-              speed = 0.7;
-          }
-          else if (distance < 6)
-          {
-              speed = 0.75; //Tested already
-          }
-          else
-          {
-              speed = 1.0;
-          }
-
-          shooter.setShooterSpeed(speed);
-          System.out.println("Distance: " + distance);
-          System.out.println("Shooter Speed: " + speed);
-
-        }, shooter).finallyDo(() -> shooter.stopTopShooter().schedule()));
+      //Top shooter speed - runs continuously as the default command (auto spin-up/down by pose-based
+      //distance to the hub), no button needed
+      shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
 
       //Intake: Toggle On and Off 
       shooterXbox.b()

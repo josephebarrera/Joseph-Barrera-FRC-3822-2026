@@ -94,6 +94,20 @@ public class VisionSubsystem extends SubsystemBase
         return Optional.of(new Pose2d(sumX / count, sumY / count, new edu.wpi.first.math.geometry.Rotation2d()));
     }
 
+    /**
+     * Straight-line distance from the robot's current field position to the hub's fixed field position, in feet.
+     * Unlike getTurretHubDistanceFeet(), this doesn't require the turret camera to have a visual lock - it's
+     * always available as long as the robot's own pose is known, which is what makes shooting from any
+     * position (not just when the hub happens to be in view) possible.
+     *
+     * @param robotPose Current robot field pose, from SwerveSubsystem.getPose().
+     */
+    public Optional<Double> getPoseBasedDistanceToHubFeet(Pose2d robotPose)
+    {
+        return getHubFieldPosition().map(hubPose ->
+            edu.wpi.first.math.util.Units.metersToFeet(hubPose.getTranslation().getDistance(robotPose.getTranslation())));
+    }
+
     private boolean isHubTag(int id)
     {
         return id == 9 || id == 10 || id == 25 || id == 26;
