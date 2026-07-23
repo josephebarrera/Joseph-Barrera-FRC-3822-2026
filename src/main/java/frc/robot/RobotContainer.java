@@ -176,9 +176,8 @@ public class RobotContainer
         .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
         .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
 
-      //Turret Tracking
-      shooterXbox.leftBumper()
-        .whileTrue(turret.aimWithVision(vision));
+      //Turret Tracking - runs continuously as the default command, no button needed
+      turret.setDefaultCommand(turret.trackHub(vision, drivebase));
 
       //Y = up Actuator
       // shooterXbox.y()
