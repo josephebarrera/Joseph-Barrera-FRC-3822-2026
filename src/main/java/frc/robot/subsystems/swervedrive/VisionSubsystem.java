@@ -24,8 +24,8 @@ public class VisionSubsystem extends SubsystemBase
     {
         AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-        // Camera is mounted 0.381m forward, 0.0508m left, 0.3683m up from robot center, facing the robot's front (yaw offset by PI since the camera faces opposite the mount's zero direction).
-        Transform3d robotToCamera = new Transform3d(new Translation3d(0.381,0.0508,0.3683), new Rotation3d(0.0, 0.0, Math.PI));
+        // Camera is mounted 0.381m forward, 0.0508m left, 0.3683m up from robot center, facing the same direction as the robot's front.
+        Transform3d robotToCamera = new Transform3d(new Translation3d(0.381,0.0508,0.3683), new Rotation3d(0.0, 0.0, 0.0));
 
         poseEstimator = new PhotonPoseEstimator(fieldLayout,PoseStrategy.LOWEST_AMBIGUITY,robotToCamera);
     }
