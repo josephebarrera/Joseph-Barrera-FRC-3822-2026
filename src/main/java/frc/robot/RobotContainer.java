@@ -57,7 +57,7 @@ public class RobotContainer
       configureBindings();
 
       //Configure the SmartDashboard
-      autos.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
+      autos.setDefaultOption("New Auto", new PathPlannerAuto("New Auto"));
 
       //Display the options 
       SmartDashboard.putData("Auto Chooser", autos);
