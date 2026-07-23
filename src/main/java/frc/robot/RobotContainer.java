@@ -107,22 +107,51 @@ public class RobotContainer
     {
 
       /*********************************************************** Driver Commands ***************************************************/
+      //Single-controller setup: turret aim and top shooter speed are both automatic default commands now,
+      //so one driver can handle driving, firing, and the manual turret/agitator fallbacks below.
+
       //Zero the gyro
       driverXbox.b()
         .onTrue(Commands.runOnce(drivebase::zeroGyroAllianceAware));
 
       Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveInputStream);
-     
+
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+      //Fire: hold right trigger to feed a ball from the agitator into the (already auto-spinning) shooter
+      driverXbox.rightTrigger()
+        .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
+        .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
+
+      //Turret: manual nudge left/right - fallback override, interrupts the auto-tracking default command
+      //while held, hands back to it automatically on release
+      driverXbox.povLeft()
+        .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
+        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
+
+      driverXbox.povRight()
+        .whileTrue(Commands.run(() -> turret.testTurnRight(), turret))
+        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
+
+      //Agitator and shooter intake reverse (e.g. to clear a jam)
+      driverXbox.x()
+        .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
+        .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
       /*******************************************************************************************************************************/
 
-      /****************************************************** Shooter Commands *******************************************************/
+      /****************************************************** Automatic default commands *********************************************/
 
-      //Top shooter speed - runs continuously as the default command (auto spin-up/down by pose-based
-      //distance to the hub), no button needed
+      //Top shooter speed - auto spin-up/down by pose-based distance to the hub, no button needed
       shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
 
-      //Intake: Toggle On and Off 
+      //Turret tracking - vision when locked, pose-based fallback otherwise, no button needed
+      turret.setDefaultCommand(turret.trackHub(vision, drivebase));
+      /*******************************************************************************************************************************/
+
+      /****************************************************** Intake (out of scope - hardware currently broken) *********************/
+      //Left on shooterXbox for now, unchanged, until the intake hardware is fixed and this gets revisited.
+
+      //Intake: Toggle On and Off
       shooterXbox.b()
         .toggleOnTrue(intake.spinIntakeForward());
 
@@ -133,29 +162,6 @@ public class RobotContainer
       //Close intake
       shooterXbox.povUp()
         .whileTrue(intake.foldCloseIntake());
-
-        //Shoot: Hold R2
-      shooterXbox.rightTrigger()
-        .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
-        .onFalse(Commands.parallel(agitator.funnelStop(),shooter.stopShooterIntake()));
-
-      //Turret: Movement Left
-      shooterXbox.povLeft()
-        .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
-        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
-
-      //Turret: Movement Right
-      shooterXbox.povRight()
-        .whileTrue(Commands.run(() -> turret.testTurnRight(), turret))
-        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
-
-      //Agitator and shooter intake reverse
-      shooterXbox.x()
-        .whileTrue(Commands.parallel(agitator.funnelReverse(), shooter.shooterIntakeReverse()))
-        .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
-
-      //Turret Tracking - runs continuously as the default command, no button needed
-      turret.setDefaultCommand(turret.trackHub(vision, drivebase));
 
       //Y = up Actuator
       // shooterXbox.y()
@@ -170,7 +176,7 @@ public class RobotContainer
       //   .toggleOnTrue(shooter.spinTopShooter());
 
       /****************************************************************************************************************************/
-       
+
     }
 
     /**
