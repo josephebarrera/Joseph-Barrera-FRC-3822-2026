@@ -28,12 +28,9 @@ public class VisionSubsystem extends SubsystemBase
 
     public VisionSubsystem()
     {
-        // PLACEHOLDER - MEASURE AND REPLACE. This robot's bodyCam mount position/rotation relative to the
-        // robot's center has not been measured yet (identity transform assumes the camera sits exactly at
-        // robot center facing straight forward, which is almost certainly wrong). Measure forward/left/height
-        // offsets in meters and the camera's yaw relative to the robot's front, the same way we measured the
-        // defense bot's robotToCamera transform, before trusting bodyCam pose estimates for anything real.
-        Transform3d robotToCamera = new Transform3d(new Translation3d(0.0, 0.0, 0.0), new Rotation3d(0.0, 0.0, 0.0));
+        // bodyCam is mounted 0.3556m behind robot center, 0.127m right, 0.3556m up, facing straight backward
+        // (yaw offset by PI since it faces the opposite direction from the robot's front), mounted level.
+        Transform3d robotToCamera = new Transform3d(new Translation3d(-0.3556, -0.127, 0.3556), new Rotation3d(0.0, 0.0, Math.PI));
 
         bodyPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, robotToCamera);
     }
