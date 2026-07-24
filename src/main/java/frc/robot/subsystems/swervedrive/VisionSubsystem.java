@@ -5,9 +5,13 @@ import java.util.Optional;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -62,25 +66,39 @@ public class VisionSubsystem extends SubsystemBase
     }
 
     /**
-     * The hub's fixed field position, derived from the known hub AprilTag poses in the loaded field layout
-     * rather than a hardcoded/guessed coordinate. Averages whichever hub tags are present in the layout for
-     * robustness. Returns empty if none of the hub tag IDs are found in the field layout.
+     * The CURRENT ALLIANCE'S hub field position, derived from the known hub AprilTag poses in the loaded field
+     * layout. HUB_TAG_IDS includes tags for both alliances' hubs (this is a symmetric field), so this only
+     * averages whichever of those tags are on our own alliance's half of the field - averaging all of them
+     * together would produce a nonsense point near the middle of the field, not either team's real hub.
+     * Returns empty if none of our alliance's hub tags are found in the field layout.
      */
     public Optional<Pose2d> getHubFieldPosition()
     {
+        boolean blueAlliance = DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Blue;
+        double fieldMidpointX = fieldLayout.getFieldLength() / 2.0;
+
         double sumX = 0;
         double sumY = 0;
         int count = 0;
 
         for (int id : HUB_TAG_IDS)
         {
-            Optional<edu.wpi.first.math.geometry.Pose3d> tagPose = fieldLayout.getTagPose(id);
-            if (tagPose.isPresent())
+            Optional<Pose3d> tagPose = fieldLayout.getTagPose(id);
+            if (tagPose.isEmpty())
             {
-                sumX += tagPose.get().getX();
-                sumY += tagPose.get().getY();
-                count++;
+                continue;
             }
+
+            boolean tagOnBlueHalf = tagPose.get().getX() < fieldMidpointX;
+            if (tagOnBlueHalf != blueAlliance)
+            {
+                continue; //this tag belongs to the other alliance's hub, skip it
+            }
+
+            sumX += tagPose.get().getX();
+            sumY += tagPose.get().getY();
+            count++;
         }
 
         if (count == 0)
@@ -88,7 +106,7 @@ public class VisionSubsystem extends SubsystemBase
             return Optional.empty();
         }
 
-        return Optional.of(new Pose2d(sumX / count, sumY / count, new edu.wpi.first.math.geometry.Rotation2d()));
+        return Optional.of(new Pose2d(sumX / count, sumY / count, new Rotation2d()));
     }
 
     /**

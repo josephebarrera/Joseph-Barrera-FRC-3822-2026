@@ -144,10 +144,11 @@ public class RobotContainer
       //Top shooter speed - auto spin-up/down by pose-based distance to the hub, no button needed
       shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
 
-      //Turret tracking - TEMPORARILY DISABLED while drivetrain testing is in progress (DEGREES_PER_ENCODER_UNIT
-      //isn't measured yet and PID isn't tuned, so it was moving unpredictably). Re-enable this line once the
-      //drivetrain is confirmed solid and it's time to work on turret calibration/tuning.
-      // turret.setDefaultCommand(turret.trackHub(vision, drivebase));
+      //Turret tracking - re-enabled now that the drivetrain is confirmed solid. Note: DEGREES_PER_ENCODER_UNIT
+      //in Turret.java is still an unmeasured placeholder, so pose-based fallback aiming (when the turret
+      //camera doesn't have a lock) may point at the wrong angle until that's measured - direct vision-based
+      //aiming (when it does have a lock) isn't affected by this.
+      turret.setDefaultCommand(turret.trackHub(vision, drivebase));
       /*******************************************************************************************************************************/
 
       /****************************************************** Intake (out of scope - hardware currently broken) *********************/
