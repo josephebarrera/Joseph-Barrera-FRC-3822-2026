@@ -63,7 +63,7 @@ public class RobotContainer
     public SwerveInputStream driveInputStream = SwerveInputStream.of(
     drivebase.getSwerveDrive(),
     () -> -driverXbox.getLeftY(),
-    () -> driverXbox.getLeftX())
+    () -> -driverXbox.getLeftX())
     .withControllerRotationAxis(()-> driverXbox.getRightX())
     .deadband(Constants.OperatorConstants.DEADBAND)
     .scaleTranslation(0.5) //Originally 0.5 
@@ -144,8 +144,10 @@ public class RobotContainer
       //Top shooter speed - auto spin-up/down by pose-based distance to the hub, no button needed
       shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
 
-      //Turret tracking - vision when locked, pose-based fallback otherwise, no button needed
-      turret.setDefaultCommand(turret.trackHub(vision, drivebase));
+      //Turret tracking - TEMPORARILY DISABLED while drivetrain testing is in progress (DEGREES_PER_ENCODER_UNIT
+      //isn't measured yet and PID isn't tuned, so it was moving unpredictably). Re-enable this line once the
+      //drivetrain is confirmed solid and it's time to work on turret calibration/tuning.
+      // turret.setDefaultCommand(turret.trackHub(vision, drivebase));
       /*******************************************************************************************************************************/
 
       /****************************************************** Intake (out of scope - hardware currently broken) *********************/
