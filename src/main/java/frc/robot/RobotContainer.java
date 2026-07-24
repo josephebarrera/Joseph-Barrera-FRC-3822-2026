@@ -62,7 +62,7 @@ public class RobotContainer
     */
     public SwerveInputStream driveInputStream = SwerveInputStream.of(
     drivebase.getSwerveDrive(),
-    () -> driverXbox.getLeftY(),
+    () -> -driverXbox.getLeftY(),
     () -> driverXbox.getLeftX())
     .withControllerRotationAxis(()-> driverXbox.getRightX())
     .deadband(Constants.OperatorConstants.DEADBAND)
