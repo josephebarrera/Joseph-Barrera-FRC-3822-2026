@@ -123,15 +123,14 @@ public class RobotContainer
         .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
         .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
 
-      //Turret: manual nudge left/right - fallback override, interrupts the auto-tracking default command
-      //while held, hands back to it automatically on release
-      driverXbox.povLeft()
-        .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
-        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
+      //Turret: manual nudge left/right - TURRET FULLY DISABLED, see note near the default command below.
+      // driverXbox.povLeft()
+      //   .whileTrue(Commands.run(() -> turret.testTurnLeft(), turret))
+      //   .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
 
-      driverXbox.povRight()
-        .whileTrue(Commands.run(() -> turret.testTurnRight(), turret))
-        .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
+      // driverXbox.povRight()
+      //   .whileTrue(Commands.run(() -> turret.testTurnRight(), turret))
+      //   .onFalse(Commands.runOnce(() -> turret.stopTurret(), turret));
 
       //Agitator and shooter intake reverse (e.g. to clear a jam)
       driverXbox.x()
@@ -144,11 +143,11 @@ public class RobotContainer
       //Top shooter speed - auto spin-up/down by pose-based distance to the hub, no button needed
       shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
 
-      //Turret tracking - re-enabled now that the drivetrain is confirmed solid. Note: DEGREES_PER_ENCODER_UNIT
-      //in Turret.java is still an unmeasured placeholder, so pose-based fallback aiming (when the turret
-      //camera doesn't have a lock) may point at the wrong angle until that's measured - direct vision-based
-      //aiming (when it does have a lock) isn't affected by this.
-      turret.setDefaultCommand(turret.trackHub(vision, drivebase));
+      //Turret tracking - TURRET FULLY DISABLED: it started moving unexpectedly on enable and needs to be
+      //investigated before running again. No default command means it never receives a nonzero power command
+      //from anywhere (verified: setTurretPower/stopTurret are only ever called from trackHub and the manual
+      //nudge bindings above, both currently disabled, and Turret's own periodic() has no motor commands).
+      // turret.setDefaultCommand(turret.trackHub(vision, drivebase));
       /*******************************************************************************************************************************/
 
       /****************************************************** Intake (out of scope - hardware currently broken) *********************/
