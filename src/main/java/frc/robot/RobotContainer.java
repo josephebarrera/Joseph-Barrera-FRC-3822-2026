@@ -140,8 +140,10 @@ public class RobotContainer
 
       /****************************************************** Automatic default commands *********************************************/
 
-      //Top shooter speed - auto spin-up/down by pose-based distance to the hub, no button needed
-      shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
+      //Top shooter speed - TOP SHOOTER FULLY DISABLED: same as the turret, it was still spinning on enable.
+      //No default command means setShooterSpeed() never gets called from anywhere automatically. The fire
+      //trigger's feed motor (shooterIntake, a separate motor from the flywheels) is untouched and still works.
+      // shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
 
       //Turret tracking - TURRET FULLY DISABLED: it started moving unexpectedly on enable and needs to be
       //investigated before running again. No default command means it never receives a nonzero power command
