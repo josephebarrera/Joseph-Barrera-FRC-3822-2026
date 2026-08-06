@@ -66,7 +66,7 @@ public class Shooter extends SubsystemBase
             {
                 setShooterSpeed(0.0);
             }
-        }, this);
+        }, this).finallyDo(() -> setShooterSpeed(0.0));
     }
 
     //************************************************* Commands *************************************************/
