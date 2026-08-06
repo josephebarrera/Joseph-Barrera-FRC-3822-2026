@@ -107,8 +107,8 @@ public class RobotContainer
     {
 
       /*********************************************************** Driver Commands ***************************************************/
-      //Single-controller setup: turret aim and top shooter speed are both automatic default commands now,
-      //so one driver can handle driving, firing, and the manual turret/agitator fallbacks below.
+      //Single-controller setup: everything is on one driver controller. Top shooter is a manual toggle
+      //(left bumper) rather than automatic; turret is currently fully disabled (see below).
 
       //Zero the gyro
       driverXbox.b()
@@ -118,10 +118,18 @@ public class RobotContainer
 
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
-      //Fire: hold right trigger to feed a ball from the agitator into the (already auto-spinning) shooter
+      //Fire: hold right trigger to feed a ball from the agitator into the shooter (assumes the top shooter
+      //has already been enabled and is up to speed via left bumper below)
       driverXbox.rightTrigger()
         .whileTrue(Commands.parallel(agitator.funnelForward(), shooter.spinShooterIntake()))
         .onFalse(Commands.parallel(agitator.funnelStop(), shooter.stopShooterIntake()));
+
+      //Top shooter: press left bumper to enable (spins to the correct pose-based distance speed, within
+      //range), press again to disable. Manual toggle instead of running automatically, since the automatic
+      //version was spinning up unexpectedly - this reuses the same distance-based speed logic, just under
+      //explicit driver control.
+      driverXbox.leftBumper()
+        .toggleOnTrue(shooter.autoSpinUp(vision, drivebase));
 
       //Turret: manual nudge left/right - TURRET FULLY DISABLED, see note near the default command below.
       // driverXbox.povLeft()
@@ -139,11 +147,7 @@ public class RobotContainer
       /*******************************************************************************************************************************/
 
       /****************************************************** Automatic default commands *********************************************/
-
-      //Top shooter speed - TOP SHOOTER FULLY DISABLED: same as the turret, it was still spinning on enable.
-      //No default command means setShooterSpeed() never gets called from anywhere automatically. The fire
-      //trigger's feed motor (shooterIntake, a separate motor from the flywheels) is untouched and still works.
-      // shooter.setDefaultCommand(shooter.autoSpinUp(vision, drivebase));
+      //Top shooter is no longer a default command - see the left bumper toggle binding above instead.
 
       //Turret tracking - TURRET FULLY DISABLED: it started moving unexpectedly on enable and needs to be
       //investigated before running again. No default command means it never receives a nonzero power command
